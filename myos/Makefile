@@ -55,8 +55,12 @@ run: myos.bin
 	qemu-system-i386 -kernel myos.bin
 
 # Run the ISO instead
-run-iso: iso
-	qemu-system-i386 -cdrom myos.iso
+iso: myos.bin
+	mkdir -p iso/boot/grub
+	cp myos.bin iso/boot/myos.bin
+	cp grub/grub.cfg iso/boot/grub/grub.cfg
+	$(GRUB) -o myos.iso iso
+	@echo "ISO built: myos.iso"
 
 clean:
 	rm -f $(ALL_OBJS) myos.bin myos.iso iso/boot/myos.bin
